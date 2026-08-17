@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Race Evolution</title>
+  <style>
+    :root{
+      --bg:#0b0d12;
+      --panel:#121622;
+      --text:#f5f7fb;
+      --muted:#a7b0c0;
+      --red:#ff3b30;
+      --red2:#ff6a5f;
+      --silver:#c9d1d9;
+      --line:rgba(255,255,255,.08);
+      --glow:rgba(255,59,48,.24);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,Arial,sans-serif;
+      background:
+        radial-gradient(circle at top, #1a2030 0%, #0b0d12 50%, #07080c 100%);
+      color:var(--text);
+    }
+
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+
+    header{
+      position:sticky;
+      top:0;
+      z-index:20;
+      background:rgba(11,13,18,.72);
+      backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--line);
+    }
+
+    nav{
+      min-height:74px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .brand{
+      font-weight:900;
+      letter-spacing:2.5px;
+      font-size:1rem;
+    }
+
+    .links{
+      display:flex;
+      gap:18px;
+      flex-wrap:wrap;
+      color:var(--muted);
+      font-weight:600;
+      font-size:.95rem;
+    }
+
+    .links a:hover{color:var(--text)}
+
+    .hero{
+      min-height:92vh;
+      display:grid;
+      grid-template-columns:1.05fr .95fr;
+      gap:34px;
+      align-items:center;
+      padding:44px 0 30px;
+    }
+
+    .kicker{
+      color:var(--red);
+      text-transform:uppercase;
+      letter-spacing:3px;
+      font-size:.82rem;
+      font-weight:800;
+    }
+
+    .hero h1{
+      font-size:clamp(3rem,7vw,6.6rem);
+      line-height:.92;
+      margin:12px 0 18px;
+      max-width:10ch;
+      letter-spacing:-.04em;
+    }
+
+    .hero p{
+      max-width:58ch;
+      color:var(--muted);
+      line-height:1.8;
+      font-size:1.05rem;
+      margin:0;
+    }
+
+    .cta{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-top:28px;
+    }
+
+    .btn{
+      padding:14px 22px;
+      border-radius:999px;
+      font-weight:800;
+      border:1px solid var(--line);
+      transition:.2s ease;
+    }
+
+    .btn:hover{transform:translateY(-1px)}
+
+    .primary{
+      background:linear-gradient(135deg,var(--red),var(--red2));
+      box-shadow:0 14px 30px var(--glow);
+    }
+
+    .secondary{
+      background:rgba(255,255,255,.03);
+    }
+
+    .visual{
+      position:relative;
+      min-height:540px;
+      border-radius:30px;
+      background:rgba(255,255,255,.03);
+      border:1px solid var(--line);
+      overflow:hidden;
+      box-shadow:0 30px 80px rgba(0,0,0,.45);
+    }
+
+    .visual img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+      filter:saturate(1.08) contrast(1.05);
+    }
+
+    .overlay{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.45));
+      pointer-events:none;
+    }
+
+    .badge{
+      position:absolute;
+      left:18px;
+      bottom:18px;
+      background:rgba(11,13,18,.72);
+      backdrop-filter:blur(12px);
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:10px 14px;
+      font-weight:800;
+      letter-spacing:.5px;
+    }
+
+    .section-img{
+      margin-top:28px;
+      border-radius:24px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      box-shadow:0 18px 50px rgba(0,0,0,.35);
+      position:relative;
+    }
+
+    .section-img img{
+      width:100%;
+      display:block;
+      height:360px;
+      object-fit:cover;
+    }
+
+    .section-img .overlay{background:linear-gradient(180deg,rgba(0,0,0,.08),rgba(0,0,0,.55))}
+
+    section{
+      padding:92px 0;
+      border-top:1px solid var(--line);
+    }
+
+    h2{
+      font-size:clamp(2rem,4vw,3.4rem);
+      margin:0 0 12px;
+      letter-spacing:-.03em;
+    }
+
+    .sub{
+      color:var(--muted);
+      max-width:72ch;
+      line-height:1.8;
+      margin:0;
+    }
+
+    .timeline{
+      display:grid;
+      gap:16px;
+      margin-top:28px;
+    }
+
+    .step{
+      display:grid;
+      grid-template-columns:120px 1fr;
+      gap:18px;
+      align-items:start;
+      padding:18px 0;
+      border-bottom:1px solid var(--line);
+    }
+
+    .step:last-child{border-bottom:none}
+
+    .tag{
+      color:var(--silver);
+      font-weight:900;
+      letter-spacing:2px;
+      font-size:.85rem;
+    }
+
+    .step h3{
+      margin:0 0 8px;
+      font-size:1.25rem;
+    }
+
+    .step p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.75;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:18px;
+      margin-top:28px;
+    }
+
+    .card{
+      background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:22px;
+      overflow:hidden;
+      transition:.2s ease;
+    }
+
+    .card:hover{transform:translateY(-4px)}
+
+    .card img{
+      width:100%;
+      height:190px;
+      object-fit:cover;
+      border-radius:16px;
+      margin-bottom:16px;
+      display:block;
+    }
+
+    .card .year{
+      color:var(--red);
+      font-weight:900;
+      letter-spacing:2px;
+      font-size:.82rem;
+    }
+
+    .card h3{
+      margin:12px 0 8px;
+      font-size:1.2rem;
+    }
+
+    .card p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.7;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+      margin-top:28px;
+    }
+
+    .stat{
+      padding:24px;
+      border-radius:22px;
+      background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+      border:1px solid var(--line);
+    }
+
+    .stat strong{
+      display:block;
+      font-size:2rem;
+      margin-bottom:6px;
+    }
+
+    .footer{
+      padding:30px 0 52px;
+      color:var(--muted);
+      text-align:center;
+    }
+
+    @media (max-width: 960px){
+      .hero,.grid,.stats{grid-template-columns:1fr 1fr}
+      .step{grid-template-columns:1fr}
+      .hero h1{max-width:12ch}
+    }
+
+    @media (max-width: 640px){
+      .hero,.grid,.stats{grid-template-columns:1fr}
+      .visual{min-height:420px}
+      .links{gap:12px}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <nav>
+        <div class="brand">RACE EVOLUTION</div>
+        <div class="links">
+          <a href="#home">Home</a>
+          <a href="#timeline">Timeline</a>
+          <a href="#icons">Icons</a>
+          <a href="#stats">Stats</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero" id="home">
+      <div>
+        <div class="kicker">Single-page racing story</div>
+        <h1>Speed, style, and the evolution of sport cars.</h1>
+        <p>
+          From early stripped-down racers to today’s advanced hypercars, this scrolling experience
+          tells the story of how racing machines became faster, lighter, and more extreme.
+        </p>
+        <div class="cta">
+          <a class="btn primary" href="#timeline">Start the journey</a>
+          <a class="btn secondary" href="#icons">Explore icons</a>
+        </div>
+      </div>
+
+      <div class="visual">
+        <img src="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/bc27057e50fb19e950321c9cbc5dd4d6ee011623.jpg" alt="Night racing track illuminated at dusk">
+        <div class="overlay"></div>
+        <div class="badge">Track Nights</div>
+      </div>
+    </section>
+
+    <section id="timeline">
+      <h2>Evolution timeline</h2>
+      <p class="sub">A clean vertical journey through the major eras of racing design.</p>
+
+      <div class="section-img">
+        <img src="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/bc27057e50fb19e950321c9cbc5dd4d6ee011623.jpg" alt="Illuminated racetrack at night">
+        <div class="overlay"></div>
+      </div>
+
+      <div class="timeline">
+        <div class="step">
+          <div class="tag">1890s</div>
+          <div>
+            <h3>Origins of racing</h3>
+            <p>Lightweight frames, exposed engines, and basic bodywork defined the first speed contests.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="tag">1950s</div>
+          <div>
+            <h3>Purpose-built racers</h3>
+            <p>Streamlined bodies and stronger engineering pushed racing from hobby to serious competition.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="tag">1980s</div>
+          <div>
+            <h3>Aero and turbo era</h3>
+            <p>Downforce, turbocharging, and sharp lines became the new language of performance.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="tag">2020s</div>
+          <div>
+            <h3>Carbon and hybrid future</h3>
+            <p>Modern sport cars combine advanced materials, digital systems, and aggressive aerodynamics.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="icons">
+      <h2>Legendary icons</h2>
+      <p class="sub">These cards use real imagery to show the shift from classic sports cars to modern machines.</p>
+
+      <div class="grid">
+        <div class="card">
+          <img src="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/f9d3236207c7d7556c8f05f1e1a1ee1b00b717de.jpg" alt="Classic black vintage sports car front view">
+          <div class="year">ERA I</div>
+          <h3>Early race machines</h3>
+          <p>Minimal bodies, mechanical simplicity, and raw driving character.</p>
+        </div>
+        <div class="card">
+          <img src="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/25cc3891e6ea560d90ac7775c33b599a753f3a89.jpg" alt="Classic red sports car front view">
+          <div class="year">ERA II</div>
+          <h3>Classic sports cars</h3>
+          <p>Sleeker silhouettes and stronger engine performance defined the golden age.</p>
+        </div>
+        <div class="card">
+          <img src="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/54eebdab1a2c91df9da6b327d5faa8e5b7c16918.jpg" alt="Futuristic electric hypercar with gullwing doors">
+          <div class="year">ERA III</div>
+          <h3>Track monsters</h3>
+          <p>Advanced aerodynamics and wider stance brought extreme cornering power.</p>
+        </div>
+        <div class="card">
+          <img src="https://pplx-res.cloudinary.com/image/upload/pplx_search_images/26eb1931a3c74fed1a49482b695cf052dc2cd88e.jpg" alt="Sleek white hypercar rear view">
+          <div class="year">ERA IV</div>
+          <h3>Modern hypercars</h3>
+          <p>Carbon fiber, hybrid systems, and computer-assisted control transformed speed.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="stats">
+      <h2>Performance shifts</h2>
+      <p class="sub">A visual summary of how racing priorities changed across generations.</p>
+
+      <div class="stats">
+        <div class="stat">
+          <strong>Lower</strong>
+          <span>Weight reduction became a priority across every era.</span>
+        </div>
+        <div class="stat">
+          <strong>Faster</strong>
+          <span>Acceleration improved as engines and traction evolved.</span>
+        </div>
+        <div class="stat">
+          <strong>Smarter</strong>
+          <span>Electronics, sensors, and software changed the racing game.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Build this site</h2>
+      <p class="sub">
+        This layout is ready to be turned into a polished portfolio, showroom, or fan experience with full images and animations.
+      </p>
+      <div class="cta">
+        <a class="btn primary" href="mailto:hello@example.com">Contact me</a>
+        <a class="btn secondary" href="#home">Back to top</a>
+      </div>
+    </section>
+  </main>
+
+  <div class="footer">
+    © 2026 Race Evolution. Built as a single-page scrolling layout.
+  </div>
+</body>
+</html>
